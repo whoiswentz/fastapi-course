@@ -5,10 +5,13 @@ from auth import authentication
 from db import models
 from db.database import engine
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 models.Base.metadata.create_all(engine)
 
-app = FastAPI()
+app = FastAPI(
+    name="FastAPI Course"
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,12 +26,5 @@ app.include_router(article_route.router)
 app.include_router(user_routes.router)
 app.include_router(authentication.router)
 
-
-@app.get("/")
-def read_root() -> Dict[str, str]:
-    return {"message": "Hello, World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, query: Optional[str] = None) -> Dict[str, str]:
-    return {'item_id': item_id, "query": query}
+if __name__ == "__main__":
+    uvicorn.run(app, host="localhost", port=8000)

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from db.hash import Hash
 from sqlalchemy.orm.session import Session
 from .schemas import UserSchema
@@ -24,6 +24,10 @@ def get_all_users(db: Session) -> List[UserModel]:
 
 def get_user_by_id(db: Session, id: int) -> UserModel:
     return (db.query(UserModel).filter(UserModel.id == id).first())
+
+
+def get_user_by_username(db: Session, username: str) -> Optional[UserModel]:
+    return (db.query(UserModel).filter(UserModel.username == username).first())
 
 
 def update_user(db: Session, id: int, request: UserSchema) -> UserModel:
